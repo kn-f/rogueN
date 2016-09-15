@@ -1,0 +1,15 @@
+{
+    "require": {
+        "monolog/monolog": "^1.21",
+        "bernard/bernard": "^0.12.3",
+        "league/climate": "^3.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "knF\\":"knF/"
+        }
+    }
+}
