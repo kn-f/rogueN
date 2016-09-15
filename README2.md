@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # web-php-apache2-simple
 A hello world PHP script
 
@@ -20,3 +21,6 @@ FROM [codenvy/php](https://hub.docker.com/r/codenvy/php/)
 # Preview URL
 
 localhost:$mappedPort/$projectName
+=======
+# rogueN
+>>>>>>> c82ca140d625e67a8e64348442fea6861cfd3baf

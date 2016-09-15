@@ -8,13 +8,15 @@ $logger->info("---------------------------------------");
 $logger->info("------ START --------------------------");
 $logger->info("---------------------------------------");
 
-$ring = array_fill(0,5,array_fill(0,5,'.'));
+
+
+$ring = new \knF\Support\Map();
 
 $climate = new League\CLImate\CLImate;
 
 
 while (true) {
     $climate->clear();
-    $climate->blue()->table($ring);    
+    $climate->blue()->table($ring->map);    
     sleep (1);
 }
