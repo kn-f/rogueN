@@ -10,34 +10,40 @@
  *
  */
 
-//set the distance array
-$_distArr = array_fill(1,6,array_fill(1,6,999999));
-$_distArr[1][2] = 7;
-$_distArr[1][3] = 9;
-$_distArr[1][6] = 14;
-$_distArr[2][1] = 7;
-$_distArr[2][3] = 10;
-$_distArr[2][4] = 15;
-$_distArr[3][1] = 9;
-$_distArr[3][2] = 10;
-$_distArr[3][4] = 11;
-$_distArr[3][6] = 2;
-$_distArr[4][2] = 15;
-$_distArr[4][3] = 11;
-$_distArr[4][5] = 6;
-$_distArr[5][4] = 6;
-$_distArr[5][6] = 9;
-$_distArr[6][1] = 14;
-$_distArr[6][3] = 2;
-$_distArr[6][5] = 9;
+$map = array_fill(0,5,array_fill(0,5,'.'));
+$map[1][1] = 'x';
+$map[0][2] = 'x';
+$_distArr = array_fill(0,25,array_fill(0,25,999999));
+
+$start = 0*5+0; //start point
+$end = 1*5+2; //end point
+
+
+
+for ($i = 0; $i<5; $i++) {
+    for ($j = 0; $j<5; $j++) {
+        //set distance to adjacent nodes to 1 if empty
+        if ($map[$i][$j] == '.') {
+            if ($j<4 and $map[$i][$j+1] == '.') {
+                $_distArr[$i*5+$j][$i*5+$j+1] = 1;
+                $_distArr[$i*5+$j+1][$i*5+$j] = 1;
+            }
+
+            if ($i<4 and $map[$i+1][$j] == '.') {
+                $_distArr[$i*5+$j][($i+1)*5+$j] = 1;
+                $_distArr[($i+1)*5+$j][$i*5+$j] = 1;
+            }
+        }
+    }
+}
 
 //the start and the end
-$a = 1;
-$b = 5;
+$a = $start;
+$b = $end;
 
 //initialize the array for storing
-$S = array();//the nearest path with its parent and weight
 $Q = array();//the left nodes without the nearest path
+$S = array();//the nearest path with its parent and weight
 foreach(array_keys($_distArr) as $val) $Q[$val] = 99999;
 $Q[$a] = 0;
 
@@ -45,9 +51,11 @@ $Q[$a] = 0;
 while(!empty($Q)){
     $min = array_search(min($Q), $Q);//the most min weight
     if($min == $b) break;
-    foreach($_distArr[$min] as $key=>$val) if(!empty($Q[$key]) && $Q[$min] + $val < $Q[$key]) {
-        $Q[$key] = $Q[$min] + $val;
-        $S[$key] = array($min, $Q[$key]);
+    foreach($_distArr[$min] as $key=>$val) {
+        if(!empty($Q[$key]) && $Q[$min] + $val < $Q[$key]) {
+            $Q[$key] = $Q[$min] + $val;
+            $S[$key] = array($min, $Q[$key]);
+        }
     }
     unset($Q[$min]);
 }
@@ -68,8 +76,8 @@ require __DIR__ . '/vendor/autoload.php';
 $climate = new League\CLImate\CLImate;
 
 
-$climate->clear();
-$climate->blue()->table($_distArr);    
+//$climate->clear();
+$climate->blue()->table($map);    
 $climate->green()->out("From $a to $b");
 $climate->green()->out("The length is ".$S[$b][1]);
 $climate->red()->out("Path is ".implode('->', $path));
